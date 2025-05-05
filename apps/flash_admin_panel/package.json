@@ -4,5 +4,13 @@
   "private": true,
   "nx": {
     "name": "flash_admin_panel"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react-icons": "^5.5.0"
   }
 }
