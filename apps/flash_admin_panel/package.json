@@ -1,0 +1,8 @@
+{
+  "name": "@flash-admin-panel/flash_admin_panel",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "flash_admin_panel"
+  }
+}
