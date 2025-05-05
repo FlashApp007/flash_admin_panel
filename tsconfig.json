@@ -5,6 +5,15 @@
   "references": [
     {
       "path": "./apps/flash_admin_panel"
+    },
+    {
+      "path": "./apps/support"
+    },
+    {
+      "path": "./libs/main_panel"
+    },
+    {
+      "path": "./libs/support_panel"
     }
   ]
 }
