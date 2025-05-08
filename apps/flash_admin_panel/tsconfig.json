@@ -3,6 +3,9 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/main_panel"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ],
