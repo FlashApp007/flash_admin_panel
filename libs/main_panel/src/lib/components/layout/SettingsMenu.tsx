@@ -15,6 +15,18 @@ interface SettingsMenuProps {
 }
 
 const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose, onLogout }) => {
+  // Local toggle state for View All Settings
+  const [isToggled, setIsToggled] = React.useState(false);
+
+  const handleToggle = () => {
+    setIsToggled((prev) => !prev);
+  };
+
+
+
+  const handleToggles = () => {
+    setIsToggled(!isToggled);
+  };
   return (
     <div className={`w-64 bg-white rounded-md shadow-lg overflow-hidden ${isOpen ? 'block' : 'hidden'}`}>
       <div className="bg-teal-600 p-3">
@@ -28,7 +40,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose, onLogout }
         <MenuItem 
           icon={<FaCog className="w-4 h-4 text-gray-500" />}
           text="System Module Setup"
-          onClick={onClose}
         />
         <MenuItem 
           icon={<FaSignOutAlt className="w-4 h-4 text-gray-500" />}
@@ -41,40 +52,35 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, onClose, onLogout }
         <MenuItem
           icon={<FaMapMarkedAlt className="w-4 h-4 text-gray-500" />}
           text="Zone Setup"
-          onClick={onClose}
         />
         <MenuItem
           icon={<FaBriefcase className="w-4 h-4 text-gray-500" />}
           text="Business Settings"
-          onClick={onClose}
         />
         <MenuItem
           icon={<FaHome className="w-4 h-4 text-gray-500" />}
           text="3rd Party"
-          onClick={onClose}
         />
         <MenuItem
           icon={<FaShareAlt className="w-4 h-4 text-gray-500" />}
           text="Social Media Setup"
-          onClick={onClose}
         />
       </div>
 
-      <div className="p-2 border-t border-gray-100">
-        <button className="w-full text-center text-teal-600 hover:text-teal-700 text-sm font-medium py-1">
-          View All Settings
+      <div className="p-2 border-t border-gray-100 flex flex-col gap-2">
+        <button
+          className={`w-full text-center text-sm font-medium py-1 rounded transition-colors duration-300 ${isToggled ? 'bg-green-500 text-white' : 'text-teal-600 hover:text-teal-700 bg-white'}`}
+          onClick={handleToggle}
+        >
+          {isToggled ? 'ON' : 'View All Settings'}
         </button>
+ 
       </div>
     </div>
   );
 };
 
-// MenuItem component for consistent styling
-interface MenuItemProps {
-  icon: React.ReactNode;
-  text: string;
-  onClick?: () => void;
-}
+
 
 const MenuItem: React.FC<MenuItemProps> = ({ icon, text, onClick }) => {
   return (

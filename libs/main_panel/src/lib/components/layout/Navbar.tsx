@@ -7,10 +7,13 @@ import ModuleSection from './ModuleSection';
 
 interface NavbarProps {
   onLogout: () => void;
+  onSettingsToggle: (open: boolean) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  // Track previous openDropdown to know when settings menu opens/closes
+  const prevOpenDropdown = React.useRef<string | null>(null);
   const [showModuleSection, setShowModuleSection] = useState(false);
   const [selectedModule, setSelectedModule] = useState({
     id: 1,
@@ -26,14 +29,23 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
     setOpenDropdown(prevDropdown => prevDropdown === dropdown ? null : dropdown);
   };
 
+  // Effect to notify parent when settings dropdown is toggled
+  React.useEffect(() => {
+    if (prevOpenDropdown.current !== openDropdown) {
+      if (openDropdown === 'settings') {
+        onSettingsToggle(true);
+      } else if (prevOpenDropdown.current === 'settings' && openDropdown !== 'settings') {
+        onSettingsToggle(false);
+      }
+      prevOpenDropdown.current = openDropdown;
+    }
+  }, [openDropdown, onSettingsToggle]);
+
   const closeDropdown = () => {
     setOpenDropdown(null);
   };
 
-  const handleSettingsMouseEnter = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpenDropdown('settings');
-  };
+  // REMOVE: handleSettingsMouseEnter, we will use click only.
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -121,7 +133,6 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
                       openDropdown === 'settings' ? 'bg-gray-100' : ''
                     }`}
                     onClick={(e) => toggleDropdown('settings', e)}
-                    onMouseEnter={handleSettingsMouseEnter}
                   >
                     <FaCog className="mr-1" />
                     Settings
@@ -136,8 +147,6 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
                         ? 'opacity-100 translate-y-0' 
                         : 'opacity-0 -translate-y-2 pointer-events-none'
                     }`}
-                    onMouseEnter={() => setOpenDropdown('settings')}
-                    onMouseLeave={closeDropdown}
                   >
                     <SettingsMenu
                       isOpen={openDropdown === 'settings'}
@@ -200,12 +209,22 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
                 </div>
                 <div className="relative h-full flex items-center">
                   <div className="relative" ref={dropdownRef}>
+              
+                    <div
+                      className={`absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 transition-all duration-200 ease-in-out transform ${
+                        openDropdown === 'settings'
+                          ? 'opacity-100 translate-y-0'
+                          : 'opacity-0 -translate-y-2 pointer-events-none'
+                      }`}
+                    >
+                      <SettingsMenu />
+                    </div>
+
+                    {/* Module Button (unchanged) */}
                     <button
                       ref={moduleButtonRef}
                       className="px-3 py-2 rounded-md text-sm font-medium flex items-center bg-[#0666ba] text-white h-full w-[150px] justify-between"
                       onClick={toggleModuleSection}
-                      onMouseEnter={() => setShowModuleSection(true)}
-                      onMouseLeave={() => !showModuleSection && setShowModuleSection(false)}
                     >
                       <div className="flex items-center">
                         {selectedModule.icon}
