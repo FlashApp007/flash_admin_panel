@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import ZoneSettings from './ZoneSettings';
+// Google Maps imports
+import { GoogleMap, LoadScript, Polygon, Marker } from '@react-google-maps/api';
+// NOTE: Install with npm install @react-google-maps/api
 
 const ZoneSetup = () => {
+  // State for viewing ZoneSettings
+  const [viewingZoneId, setViewingZoneId] = useState(null);
+
   // State for form inputs
   const [businessZoneName, setBusinessZoneName] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -77,8 +84,12 @@ const ZoneSetup = () => {
 
   // Handle view zone
   const handleView = (id) => {
-    console.log("View zone with id:", id);
-    // Implement view functionality here
+    setViewingZoneId(id);
+  };
+
+  // Callback to return to ZoneSetup
+  const handleBackFromSettings = () => {
+    setViewingZoneId(null);
   };
 
   // Handle delete zone
@@ -86,6 +97,48 @@ const ZoneSetup = () => {
     console.log("Delete zone with id:", id);
     // Implement delete functionality here
   };
+
+  // Google Maps polygon state
+  const [polygonPath, setPolygonPath] = useState<{lat: number, lng: number}[]>([]);
+  const [mapCenter] = useState({ lat: 23.8103, lng: 90.4125 }); // Dhaka
+
+  // Handle map click to add points
+  const handleMapClick = (e: google.maps.MapMouseEvent) => {
+    if (e.latLng) {
+      setPolygonPath([...polygonPath, { lat: e.latLng.lat(), lng: e.latLng.lng() }]);
+    }
+  };
+
+  // Handle submit polygon
+  const handlePolygonSubmit = () => {
+    console.log('Polygon coordinates:', polygonPath);
+    alert('Polygon coordinates logged to console.');
+  };
+
+  // Handle clear polygon
+  const handleClearPolygon = () => {
+    setPolygonPath([]);
+  };
+
+  if (viewingZoneId !== null) {
+    const selectedZone = zones.find(z => z.id === viewingZoneId);
+    return (
+      <div>
+        <button
+          onClick={handleBackFromSettings}
+          className="mb-4 px-2 py-2 border border-gray-300 rounded bg-gray-100 hover:bg-gray-200"
+        >
+          ←
+        </button>
+        <ZoneSettings zoneName={selectedZone ? selectedZone.name : ''} />
+      </div>
+    );
+  }
+
+  // Google Maps container style
+  const mapContainerStyle = { width: '100%', height: '300px' };
+  const mapContainerStyleLarge = { width: '100%', height: '400px', zIndex: 0 };
+  const dummyApiKey = 'AIzaSyAFYRjVrJAjWasVuY1eQA_gisrYq6l9Vb8';
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -162,49 +215,40 @@ const ZoneSetup = () => {
               </button>
             </div>
             <div className="relative" style={{ height: "300px" }}>
-              <img
-                src="/map-placeholder.jpg"
-                alt="Map"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjMwMCIgeT0iMTUwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmaWxsPSIjOTRhM2I4Ij5NYXAgUGxhY2Vob2xkZXI8L3RleHQ+PC9zdmc+";
-                }}
-              />
+              {/* Google Map (left column) */}
+              <LoadScript googleMapsApiKey={dummyApiKey}>
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  center={mapCenter}
+                  zoom={10}
+                  onClick={handleMapClick}
+                >
+                  {/* Draw polygon if there are points */}
+                  {polygonPath.length > 0 && (
+                    <>
+                      <Polygon
+                        path={polygonPath}
+                        options={{
+                          fillColor: '#00BFAE',
+                          fillOpacity: 0.2,
+                          strokeColor: '#00BFAE',
+                          strokeOpacity: 0.7,
+                          strokeWeight: 2,
+                          clickable: false,
+                          editable: false,
+                          draggable: false,
+                        }}
+                      />
+                      {polygonPath.map((pos, idx) => (
+                        <Marker key={idx} position={pos} />
+                      ))}
+                    </>
+                  )}
+                </GoogleMap>
+              </LoadScript>
 
-              {/* Map Markers */}
-              <div className="absolute top-10 left-20 bg-white p-2 rounded shadow-md">
-                <div className="flex items-center space-x-2 mb-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs">Dhaka Bangladesh</span>
-                </div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs">Dhaka Medical College Hospital</span>
-                </div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs">Dhaka Commerce College</span>
-                </div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs">Dhaka University Press Building</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs">Dhaka New Market Mosque</span>
-                </div>
-              </div>
+  
+           
 
               {/* Map Controls */}
               <div className="absolute right-2 top-2 flex flex-col space-y-2">
@@ -245,6 +289,23 @@ const ZoneSetup = () => {
               >
                 Reset
               </button>
+              {/* Polygon Submit & Clear Buttons */}
+              {polygonPath.length >= 3 && (
+                <button
+                  className="px-4 py-1 text-sm bg-teal-500 text-white rounded mr-2"
+                  onClick={handlePolygonSubmit}
+                >
+                  Submit Area
+                </button>
+              )}
+              {polygonPath.length > 0 && (
+                <button
+                  className="px-4 py-1 text-sm bg-gray-300 text-gray-800 rounded"
+                  onClick={handleClearPolygon}
+                >
+                  Clear Area
+                </button>
+              )}
               <button
                 className="px-4 py-1 text-sm bg-teal-500 text-white rounded"
                 onClick={handleSubmit}
@@ -334,15 +395,37 @@ const ZoneSetup = () => {
             </div>
 
             <div className="relative" style={{ height: "400px" }}>
-              <img
-                src="/map-placeholder-large.jpg"
-                alt="Map"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjMwMCIgeT0iMjAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmaWxsPSIjOTRhM2I4Ij5NYXAgUGxhY2Vob2xkZXI8L3RleHQ+PC9zdmc+";
-                }}
-              />
+              {/* Google Map (right column) */}
+              <LoadScript googleMapsApiKey={dummyApiKey}>
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyleLarge}
+                  center={mapCenter}
+                  zoom={11}
+                  onClick={handleMapClick}
+                >
+                  {/* Draw polygon if there are points */}
+                  {polygonPath.length > 0 && (
+                    <>
+                      <Polygon
+                        path={polygonPath}
+                        options={{
+                          fillColor: '#00BFAE',
+                          fillOpacity: 0.2,
+                          strokeColor: '#00BFAE',
+                          strokeOpacity: 0.7,
+                          strokeWeight: 2,
+                          clickable: false,
+                          editable: false,
+                          draggable: false,
+                        }}
+                      />
+                      {polygonPath.map((pos, idx) => (
+                        <Marker key={idx} position={pos} />
+                      ))}
+                    </>
+                  )}
+                </GoogleMap>
+              </LoadScript>
 
               {/* Search Box */}
               <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-64">
