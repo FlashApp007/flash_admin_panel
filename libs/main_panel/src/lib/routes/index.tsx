@@ -9,6 +9,7 @@ import Delivery from '../screens/Delivery';
 import BusinessInformation from '../components/second_screens/businessinformation/BusinessInformation';
 import ZoneSetup from '../components/second_screens/zonesetup/ZoneSetup';
 import Gallery from '../components/second_screens/gallery/Gallery';
+import AddBusinessModule from '../components/layout/AddBusinessModule';
 import ReactSiteSetup from '../components/second_screens/React_site/ReactSiteSetup';
 const MainPanelRoutes = () => {
   return (
@@ -51,7 +52,7 @@ const MainPanelRoutes = () => {
       <Route path="/dispatch" element={<div>Demo: Dispatch Management</div>} />
 
       {/* Settings: Business Management */}
-      <Route path="/settings/module-setup/add-business-module" element={<div>Demo: Add Business Module</div>} />
+      <Route path="/settings/module-setup/add-business-module" element={<AddBusinessModule />} />
       <Route path="/settings/module-setup/modules" element={<div>Demo: Modules</div>} />
       <Route path="/settings/subscription-management/subscription-package" element={<div>Demo: Subscription Package</div>} />
       <Route path="/settings/subscription-management/subscriber-list" element={<div>Demo: Subscriber List</div>} />

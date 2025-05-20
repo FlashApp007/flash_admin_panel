@@ -3,9 +3,10 @@ import { FaShoppingBasket, FaMedkit, FaShoppingBag, FaHamburger, FaBox, FaCar, F
 
 interface ModuleSectionProps {
   onModuleSelect: (moduleId: number, moduleName: string, moduleIcon: ReactNode) => void;
+  onShowAddBusinessModule?: () => void;
 }
 
-const ModuleSection = ({ onModuleSelect }: ModuleSectionProps) => {
+const ModuleSection = ({ onModuleSelect, onShowAddBusinessModule }: ModuleSectionProps) => {
   const [activeModule, setActiveModule] = useState(1);
 
   const modules = [
@@ -19,9 +20,15 @@ const ModuleSection = ({ onModuleSelect }: ModuleSectionProps) => {
   ];
 
   const handleModuleClick = (id: number, name: string, icon: ReactNode) => {
+    if (name === 'Add More' && onShowAddBusinessModule) {
+      onShowAddBusinessModule();
+      return;
+    }
     setActiveModule(id);
     onModuleSelect(id, name.toLowerCase(), icon);
   };
+
+
 
   return (
     <div className="p-4 rounded-lg shadow-md w-[320px] absolute right-10 top-full mt-1 z-50 bg-white ">

@@ -8,9 +8,10 @@ import ModuleSection from './ModuleSection';
 interface NavbarProps {
   onLogout: () => void;
   onSettingsToggle: (open: boolean) => void;
+  onShowAddBusinessModule?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle }) => {
+const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle, onShowAddBusinessModule }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   // Track previous openDropdown to know when settings menu opens/closes
   const prevOpenDropdown = React.useRef<string | null>(null);
@@ -254,7 +255,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle }) => {
                       onMouseEnter={() => setShowModuleSection(true)}
                       onMouseLeave={() => setShowModuleSection(false)}
                     >
-                      <ModuleSection onModuleSelect={handleModuleSelect} />
+                      <ModuleSection onModuleSelect={handleModuleSelect} onShowAddBusinessModule={onShowAddBusinessModule} />
                     </div>
                   </div>
                 </div>
