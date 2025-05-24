@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Banner from './Banner';
-import AddBusinessModule from './AddBusinessModule';
 
 interface LayoutProps {
   children?: ReactNode;
@@ -11,12 +10,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, onLogout }) => {
   const [showSettingsSections, setShowSettingsSections] = React.useState(true);
-  const [showAddBusinessModule, setShowAddBusinessModule] = React.useState(false);
 
-  // Handler to be called from ModuleSection when Add More is clicked
-  // Now passed directly as a prop below
-  const handleShowAddBusinessModule = () => setShowAddBusinessModule(true);
-  const handleCloseAddBusinessModule = () => setShowAddBusinessModule(false);
 
   // Handler to be called from Navbar when settings is toggled
   const handleSettingsToggle = (open: boolean) => {
@@ -47,23 +41,11 @@ const Layout: React.FC<LayoutProps> = ({ children, onLogout }) => {
         {/* Main container for Navbar and MainContent */}
         <div className="flex-1 ml-0 md:ml-64 pt-24">
           {/* Navbar at the top, fixed */}
-          <Navbar onLogout={onLogout} onSettingsToggle={handleSettingsToggle} onShowAddBusinessModule={handleShowAddBusinessModule} />
+          <Navbar onLogout={onLogout} onSettingsToggle={handleSettingsToggle} />
 
           {/* Main content area */}
           <main className="p-4">
-            {showAddBusinessModule ? (
-              <div>
-                <button
-                  className="mb-4 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700"
-                  onClick={handleCloseAddBusinessModule}
-                >
-                  ← Back to Modules
-                </button>
-                <AddBusinessModule />
-              </div>
-            ) : (
-              children
-            )}
+            {children}
           </main>
         </div>
       </div>

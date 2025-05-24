@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSearch, FaHome, FaShoppingCart, FaImages, FaLayerGroup, FaCog, FaBolt, FaBusinessTime, FaTools, FaChevronUp, FaChevronDown } from 'react-icons/fa';
+import { FaSearch, FaHome, FaShoppingCart, FaImages, FaLayerGroup, FaCog, FaBolt, FaBusinessTime, FaTools, FaChevronUp, FaChevronDown, FaBox, FaTags, FaTruck, FaEnvelope, FaBell, FaUserCog, FaDatabase, FaPuzzlePiece, FaGlobe, FaFileAlt, FaKey, FaMobileAlt, FaTrash, FaPlus, FaList, FaSlidersH, FaImage, FaCogs, FaSignInAlt } from 'react-icons/fa';
 import UserProfileDropdown from './UserProfileDropdown'; // Import the UserProfileDropdown component
 
 interface SidebarProps {
@@ -145,7 +145,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Module Setup Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('module-setup')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaBox className="mr-3 text-xl" />
                 Module Setup
                 {openDropdown === 'module-setup' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -158,7 +158,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Subscription Management Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('subscription-management')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaTags className="mr-3 text-xl" />
                 Subscription Management
                 {openDropdown === 'subscription-management' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -172,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Pages & Social Media Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('pages-social-media')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaGlobe className="mr-3 text-xl" />
                 Pages & Social Media
                 {openDropdown === 'pages-social-media' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -202,15 +202,15 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Other Business Management Buttons */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/zone-setup')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaSlidersH className="mr-3 text-xl" />
                 Zone Setup
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/business-settings')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaCogs className="mr-3 text-xl" />
                 Business Settings
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/gallery')}>
-                <FaBusinessTime className="mr-3 text-xl" />
+                <FaImage className="mr-3 text-xl" />
                 Gallery
               </button>
             </div>
@@ -220,7 +220,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* 3rd Party & Configuration Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('third-party-config')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaPuzzlePiece className="mr-3 text-xl" />
                 3rd Party & Configuration
                 {openDropdown === 'third-party-config' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -234,7 +234,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Email Setup Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('email-setup')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaEnvelope className="mr-3 text-xl" />
                 Email Setup
                 {openDropdown === 'email-setup' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -247,7 +247,7 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Notification Setup Dropdown */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => toggleDropdown('notification-setup')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaBell className="mr-3 text-xl" />
                 Notification Setup
                 {openDropdown === 'notification-setup' ? <FaChevronUp className="ml-auto" /> : <FaChevronDown className="ml-auto" />}
               </button>
@@ -260,23 +260,23 @@ const Sidebar: React.FC<SidebarProps> = ({ showSettingsSections = false, resetTo
 
               {/* Other System Management Buttons */}
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/login-setup')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaSignInAlt className="mr-3 text-xl" />
                 Login Setup
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/react-site')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaMobileAlt className="mr-3 text-xl" />
                 React Site
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/app-settings')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaCog className="mr-3 text-xl" />
                 APP Settings
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/clean-database')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaDatabase className="mr-3 text-xl" />
                 Clean Database
               </button>
               <button type="button" className="flex items-center p-2 rounded-md hover:bg-[#006666] text-sm w-full text-left transition-colors duration-300" onClick={() => navigate('/settings/system-addons')}>
-                <FaTools className="mr-3 text-xl" />
+                <FaPuzzlePiece className="mr-3 text-xl" />
                 System Addons
               </button>
             </div>

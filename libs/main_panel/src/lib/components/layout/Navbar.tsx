@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaCommentDots, FaUser, FaFileAlt, FaTruck, FaCog, FaShoppingBasket } from 'react-icons/fa';
 import SettingsMenu from './SettingsMenu';
 import ModuleSection from './ModuleSection';
@@ -8,10 +8,10 @@ import ModuleSection from './ModuleSection';
 interface NavbarProps {
   onLogout: () => void;
   onSettingsToggle: (open: boolean) => void;
-  onShowAddBusinessModule?: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle, onShowAddBusinessModule }) => {
+const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle }) => {
+  const navigate = useNavigate();
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   // Track previous openDropdown to know when settings menu opens/closes
   const prevOpenDropdown = React.useRef<string | null>(null);
@@ -218,7 +218,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle, onShowAddBu
                           : 'opacity-0 -translate-y-2 pointer-events-none'
                       }`}
                     >
-                      <SettingsMenu />
+                      <SettingsMenu onLogout={onLogout} />
                     </div>
 
                     {/* Module Button (unchanged) */}
@@ -255,7 +255,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout, onSettingsToggle, onShowAddBu
                       onMouseEnter={() => setShowModuleSection(true)}
                       onMouseLeave={() => setShowModuleSection(false)}
                     >
-                      <ModuleSection onModuleSelect={handleModuleSelect} onShowAddBusinessModule={onShowAddBusinessModule} />
+                      <ModuleSection onModuleSelect={handleModuleSelect} onShowAddBusinessModule={() => navigate('/settings/module-setup/add-business-module')} />
                     </div>
                   </div>
                 </div>
