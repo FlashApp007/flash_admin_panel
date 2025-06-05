@@ -6,6 +6,10 @@ import NotFoundPage from '../components/layout/NotFoundPage';
 import Promotions from '../screens/Promotions';
 import Categories from '../screens/Categories';
 import Delivery from '../screens/Delivery';
+import WithdrawTransaction from '../screens/WithdrawTransaction';
+import StoreDisbursement from '../screens/StoreDisbursement';
+import DeliverymanDisbursement from '../screens/DeliverymanDisbursement';
+import DisbursementDetails from '../screens/DisbursementDetails';
 import BusinessInformation from '../components/second_screens/businessinformation/BusinessInformation';
 import ZoneSetup from '../components/second_screens/zonesetup/ZoneSetup';
 import Gallery from '../components/second_screens/gallery/Gallery';
@@ -79,6 +83,10 @@ const MainPanelRoutes = () => {
 
       {/* Transactions & Reports (Navbar) */}
       <Route path="/transactions" element={<div>Demo: Transactions & Reports</div>} />
+      <Route path="/transactions/withdraw" element={<WithdrawTransaction />} />
+      <Route path="/disbursement" element={<StoreDisbursement />} />
+      <Route path="/deliveryman-disbursement" element={<DeliverymanDisbursement />} />
+      <Route path="/disbursement-details" element={<DisbursementDetails />} />
 
       {/* Dispatch Management (Navbar) */}
       <Route path="/dispatch" element={<div>Demo: Dispatch Management</div>} />
