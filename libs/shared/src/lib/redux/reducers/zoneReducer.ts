@@ -1,6 +1,6 @@
-import { ZONE_ACTION_TYPES } from '../types/actionTypes';
-import { ZoneState } from '../types/stateTypes';
-import { ZoneAction } from '../types/actionInterfaces';
+import { ZONE_ACTION_TYPES } from '../types/actionTypes.js';
+import { ZoneState } from '../types/stateTypes.js';
+import { ZoneAction } from '../types/actionInterfaces.js';
 
 // Initial state for zones
 const initialState: ZoneState = {

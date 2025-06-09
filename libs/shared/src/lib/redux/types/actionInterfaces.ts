@@ -1,4 +1,4 @@
-import { User, UserProfile, Module, Zone } from './stateTypes';
+import { User, UserProfile, Module, Zone } from './stateTypes.js';
 
 // Define action interfaces for type safety in reducers
 

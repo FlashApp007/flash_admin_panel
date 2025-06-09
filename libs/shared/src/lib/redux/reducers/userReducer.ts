@@ -1,5 +1,5 @@
-import { USER_ACTION_TYPES } from '../types/actionTypes';
-import { UserProfileState } from '../types/stateTypes';
+import { USER_ACTION_TYPES } from '../types/actionTypes.js';
+import { UserProfileState } from '../types/stateTypes.js';
 
 // Initial state for user profile
 const initialState: UserProfileState = {

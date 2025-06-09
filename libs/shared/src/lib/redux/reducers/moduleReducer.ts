@@ -1,6 +1,6 @@
-import { MODULE_ACTION_TYPES } from '../types/actionTypes';
-import { ModuleState } from '../types/stateTypes';
-import { ModuleAction } from '../types/actionInterfaces';
+import { MODULE_ACTION_TYPES } from '../types/actionTypes.js';
+import { ModuleState } from '../types/stateTypes.js';
+import { ModuleAction } from '../types/actionInterfaces.js';
 
 // Initial state for modules
 const initialState: ModuleState = {

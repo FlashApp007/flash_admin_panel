@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { apiService } from '../../helpers/apiClient';
-import { AUTH_ACTION_TYPES } from '../types/actionTypes';
-import { User } from '../types/stateTypes';
+import { AUTH_ACTION_TYPES } from '../types/actionTypes.js';
+import { User } from '../types/stateTypes.js';
 
 // Interface for login credentials
 interface LoginCredentials {

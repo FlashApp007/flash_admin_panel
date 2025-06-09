@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { FaRegCopy, FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+
 import loginImage from '../assets/loginwallpaper.png'; // Import image
 import flash from '../assets/flashlog.jpg'; // Import image
 
@@ -24,31 +26,105 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [showCopied, setShowCopied] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loginError, setLoginError] = useState<string | null>(null);
+  
+  const dispatch = useDispatch();
+  
+  // Access auth state from Redux store
+  const { loading, error, isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+
+  
+  // Define the credentials interface
+  interface Credentials {
+    email: string;
+    password: string;
+  }
+  
+  // Define the auth state structure
+  interface AuthState {
+    isAuthenticated: boolean;
+    user: {
+      id: string;
+      username: string;
+      email: string;
+      role: string;
+      createdAt: string;
+      updatedAt: string;
+    } | null;
+    loading: boolean;
+    error: string | null;
+  }
+  
+  interface RootState {
+    auth: AuthState;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic
-    console.log({ email, password });
+    setLoginError(null);
     
-    // TODO: Replace this with actual authentication logic
-    const isValidLogin = email === 'admin@admin.com' && password === '12345678';
-    
-    if (isValidLogin) {
-      // Store authentication state (in a real app, you might use context or a state management solution)
-      localStorage.setItem('isAuthenticated', 'true');
-      onLogin();
-    } else {
-      alert('Invalid credentials. Please try again.');
+    try {
+      // Create credentials object using our interface
+      const credentials: Credentials = { email, password };
+      
+      // Dispatch login request action
+      dispatch({ type: 'auth/loginRequest' });
+      
+      // Simulate API call (replace with actual API call when backend is ready)
+      // This is a temporary solution until the shared library is properly set up
+      setTimeout(() => {
+        // For demo purposes, accept any non-empty credentials
+        if (credentials.email && credentials.password) {
+          const mockUser = {
+            id: '1',
+            username: credentials.email.split('@')[0],
+            email: credentials.email,
+            role: 'admin',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+          
+          // Store authentication status in localStorage
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('user', JSON.stringify(mockUser));
+          
+          // Dispatch success action
+          dispatch({
+            type: 'auth/loginSuccess',
+            payload: mockUser
+          });
+        } else {
+          // Dispatch failure action
+          dispatch({
+            type: 'auth/loginFailure',
+            payload: 'Invalid email or password'
+          });
+          setLoginError('Invalid email or password');
+        }
+      }, 1000);
+    } catch (error: unknown) {
+      // Handle error with proper type checking
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred during login';
+      setLoginError(errorMessage);
+      
+      // Dispatch failure action
+      dispatch({
+        type: 'auth/loginFailure',
+        payload: errorMessage
+      });
     }
   };
 
-  const handleCopyCredentials = () => {
-    setEmail('admin@admin.com');
-    setPassword('12345678');
-    setShowCopied(true);
-    setTimeout(() => setShowCopied(false), 2000); // Hide after 2 seconds
-  };
+
+  
+  // Effect to handle successful login
+  useEffect(() => {
+    if (isAuthenticated) {
+      onLogin();
+    }
+  }, [isAuthenticated, onLogin]);
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -130,37 +206,36 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </button>
             </div>
 
+            {loginError && (
+              <div className="text-red-500 text-sm mb-4">
+                {loginError}
+              </div>
+            )}
+            
+            {error && (
+              <div className="text-red-500 text-sm mb-4">
+                {error}
+              </div>
+            )}
+            
             <button
               type="submit"
-              className="w-full py-3 rounded-lg text-white bg-green-500 hover:bg-green-600 transition-colors"
+              disabled={loading}
+              className={`w-full py-3 rounded-lg text-white ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} transition-colors flex justify-center items-center`}
             >
-              Login
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing in...
+                </>
+              ) : 'Login'}
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-gray-100 rounded-lg relative">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-gray-600">Email : admin@admin.com</div>
-                <div className="text-gray-600">Password : 12345678</div>
-              </div>
-              <div className="flex items-center">
-                {showCopied && (
-                  <span className="text-green-500 text-sm mr-2">Copied!</span>
-                )}
-                <button
-                  onClick={handleCopyCredentials}
-                  className="p-2 text-green-500 hover:opacity-80 transition-opacity"
-                  title="Click to auto-fill credentials"
-                >
-                  <FaRegCopy size={20} />
-                </button>
-              </div>
-            </div>
-            <div className="text-xs text-gray-500 mt-2 text-center">
-              Click the copy icon to auto-fill the login form
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

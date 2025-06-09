@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { apiService } from '../../helpers/apiClient';
-import { MODULE_ACTION_TYPES } from '../types/actionTypes';
-import { Module } from '../types/stateTypes';
+import { MODULE_ACTION_TYPES } from '../types/actionTypes.js';
+import { Module } from '../types/stateTypes.js';
 
 // Fetch all modules
 export const fetchModules = () => async (dispatch: Dispatch) => {

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import authReducer from './authReducer';
-import userProfileReducer from './userReducer';
-import moduleReducer from './moduleReducer';
-import zoneReducer from './zoneReducer';
+import authReducer from './authReducer.js';
+import userProfileReducer from './userReducer.js';
+import moduleReducer from './moduleReducer.js';
+import zoneReducer from './zoneReducer.js';
 
 // Combine all reducers into a single root reducer
 const rootReducer = combineReducers({

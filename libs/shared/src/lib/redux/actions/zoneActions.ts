@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { apiService } from '../../helpers/apiClient';
-import { ZONE_ACTION_TYPES } from '../types/actionTypes';
-import { Zone } from '../types/stateTypes';
+import { ZONE_ACTION_TYPES } from '../types/actionTypes.js';
+import { Zone } from '../types/stateTypes.js';
 
 // Fetch all zones
 export const fetchZones = () => async (dispatch: Dispatch) => {

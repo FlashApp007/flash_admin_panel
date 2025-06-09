@@ -1,5 +1,5 @@
-import { AUTH_ACTION_TYPES } from '../types/actionTypes';
-import { AuthState } from '../types/stateTypes';
+import { AUTH_ACTION_TYPES } from '../types/actionTypes.js';
+import { AuthState } from '../types/stateTypes.js';
 
 // Initial state for auth
 const initialState: AuthState = {

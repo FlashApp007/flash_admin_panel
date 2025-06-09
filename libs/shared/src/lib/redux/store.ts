@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from './reducers/rootReducer';
-import { RootState } from './types/stateTypes';
+import rootReducer from './reducers/rootReducer.js';
+import { RootState } from './types/stateTypes.js';
 
 // Define Redux DevTools extension type
 declare global {

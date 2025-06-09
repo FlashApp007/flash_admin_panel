@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { apiService } from '../../helpers/apiClient';
-import { USER_ACTION_TYPES } from '../types/actionTypes';
-import { UserProfile } from '../types/stateTypes';
+import { USER_ACTION_TYPES } from '../types/actionTypes.js';
+import { UserProfile } from '../types/stateTypes.js';
 
 // Fetch user profile action
 export const fetchUserProfile = (userId: string) => async (dispatch: Dispatch) => {
